@@ -68,3 +68,20 @@ with open("bios_url.txt", 'w') as f:
     for link in final_arr:
         f.write(link)
         f.write('\n')
+
+# code for getting bios from each bio url
+with open("bios.txt", 'w') as f:
+    for link in final_arr:
+        driver.get(link)
+        bio = driver.find_element_by_class_name('content-body')
+        f.write(link)
+        f.write('\n')
+        bio_text = bio.text
+        bio_text = bio_text.split('\n')
+        non_empty_lines = [line for line in bio_text if line.strip() != ""]
+        bio_without_empty_lines = ""
+        for line in non_empty_lines:
+            bio_without_empty_lines += line + "\n"
+        f.write(bio_without_empty_lines)
+        f.write('\n')
+        f.write('\n')
