@@ -26,9 +26,6 @@ for image_src in images:
         last_dot_idx = cur_src.rfind('.')
         cur_src = cur_src[last_slash_idx:last_dot_idx]
         cur_src = (''.join(filter(str.isalnum, cur_src))).lower()
-
-        print(cur_src)
-
         image_src_text.append(cur_src)
         # image_alts_text.append((''.join(filter(str.isalnum, cur_src))).lower())
 # print("num images: " + str(len(image_src_text)))
