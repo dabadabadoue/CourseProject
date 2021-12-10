@@ -42,7 +42,7 @@ faculty_keywords = ["faculty", "staff", "people"]
 for link in links:
     important_link_text = link.text
     url = link.get_attribute('href')
-    if cur_url is not None and important_link_text is not None:
+    if url is not None and important_link_text is not None:
         cur_url = (''.join(filter(str.isalnum, url))).lower()
         for word in faculty_keywords:
             if(word in cur_url):

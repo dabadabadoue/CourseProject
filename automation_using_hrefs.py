@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 options = Options()
 options.headless = True
 driver = webdriver.Chrome('./chromedriver.exe', options=options)
-department_url = 'https://cse.engin.umich.edu/people/faculty/'
+department_url = 'https://engineering.nyu.edu/academics/departments/chemical-and-biomolecular-engineering/people'
 driver.get(department_url)
 # faculty_page = driver.find_element_by_xpath(
 #     '//a[contains(@href,"people")]').click()
@@ -92,7 +92,7 @@ driver.close()
 #         f.write(link)
 #         f.write('\n')
 
-with open("faculty_names.txt", 'w') as f:
+with open("bios_url.txt", 'w') as f:
     for link in temp_names:
         f.write(link)
         f.write('\n')
