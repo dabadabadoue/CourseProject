@@ -47,6 +47,7 @@ if __name__ == '__main__':
     print('Finding Potential Directory Pages...\n')
     driver.get(department_url)
 
+    # gets relevant urls with keywords
     faculty_links = driver.find_elements_by_xpath(
         '//a[contains(@href,"faculty")]')
     faculty_links.extend(driver.find_elements_by_xpath(
@@ -58,14 +59,15 @@ if __name__ == '__main__':
 
     directory_links = []
     for link in faculty_links:
+        # gets text hyperlinked
         important_link_text = link.get_attribute('innerHTML').strip()
         arrow_idx = important_link_text.find("<")
         if arrow_idx != -1:
             important_link_text = important_link_text[:arrow_idx]
-        # important_link_text = link.text
         if important_link_text is None or important_link_text == "":
             important_link_text = link.text
 
+        # gets url
         url = link.get_attribute('href')
         if url is not None and important_link_text is not None:
             # cur_url = (''.join(filter(str.isalnum, url))).lower()
@@ -75,10 +77,12 @@ if __name__ == '__main__':
                 if word in important_link_text:
                     directory_links.append(url)
 
+    # removes duplicates and None
     directory_links = list(set(filter(None, directory_links)))
 
     i = 1
     all_bios = []
+    # printing data found
     print("Found " + str(len(directory_links)) +
           " Potential Directory Pages:\n")
     for link in directory_links:
@@ -87,6 +91,7 @@ if __name__ == '__main__':
         t = threading.Thread(target=animate)
         t.daemon = True
         t.start()
+        # calls combine_automation to get list of urls
         final_arr = combine_automation.is_directory_page(driver, link)
         done = True
         if len(final_arr) > 0:
@@ -106,8 +111,11 @@ if __name__ == '__main__':
                              " is not a Directory Webpage\n\n")
         i += 1
     driver.quit()
+
+    # removes duplicates and None
     all_bios = list(set(filter(None, all_bios)))
 
+    # writes urls ot file
     with open("faculty_pages.txt", 'w') as f:
         for url in all_bios:
             f.write(url)
