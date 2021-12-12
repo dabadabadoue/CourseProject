@@ -1,17 +1,18 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-import combine_automation
-
 import itertools
 import threading
 import time
 import sys
+import requests
+
+import combine_automation
 
 done = False
-# here is the animation
 
 
+# loading animation
 def animate():
     for c in itertools.cycle(['|', '/', '-', '\\']):
         if done:
@@ -19,7 +20,16 @@ def animate():
         sys.stdout.write('\rloading ' + c)
         sys.stdout.flush()
         time.sleep(0.1)
-    # sys.stdout.write('\rDone!     ')
+
+# verifies if input url is valid
+
+
+def is_url(url):
+    try:
+        requests.get(url)
+        return True
+    except requests.ConnectionError as exception:
+        return False
 
 
 if __name__ == '__main__':
@@ -29,6 +39,11 @@ if __name__ == '__main__':
     options.add_argument("--log-level=3")
     driver = webdriver.Chrome('./chromedriver.exe', options=options)
     department_url = input("Enter Department URL to find Directory Page: ")
+    # checks to see if input is valid
+    while is_url(department_url) is False:
+        print("URL invalid, please enter a valid URL.\n")
+        department_url = input("Enter Department URL to find Directory Page: ")
+
     print('Finding Potential Directory Pages...\n')
     driver.get(department_url)
 
@@ -64,6 +79,8 @@ if __name__ == '__main__':
 
     i = 1
     all_bios = []
+    print("Found " + str(len(directory_links)) +
+          " Potential Directory Pages:\n")
     for link in directory_links:
         print("Potential Directory Page " + str(i) + ": " + link)
         done = False
